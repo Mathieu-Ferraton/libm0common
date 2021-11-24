@@ -6,7 +6,6 @@ m0common_lib = shared_library('m0common',
 			      include_directories : motr_include,
 			      dependencies : [ini_config_lib, 
 					      pthread_lib,
-					      hashkvs_lib,
 					      uuid_lib,
 					      yaml_lib,
 					      motr_lib])

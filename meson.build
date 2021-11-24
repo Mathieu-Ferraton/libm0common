@@ -1,16 +1,13 @@
-project('libextstore',
+project('libm0common',
 	 'c',
-	 version: '1.2.7',
+	 version: '1.3.0',
 	 license: 'LGPL3.0-or-later',
 	 default_options : ['default_library=shared',
 			     'werror=true'])
 
 cc = meson.get_compiler('c')
 
-rados_lib = cc.find_library('librados', required: false)
 motr_lib = cc.find_library('libmotr', required: false)
-hashkvs_lib = cc.find_library('libhashkvs', required: false)
-dl_lib = cc.find_library('dl', required: true)
 pthread_lib = cc.find_library('pthread', required: true)
 ini_config_lib = cc.find_library('libini_config', required: true)
 
@@ -25,8 +22,7 @@ options = cc.get_supported_arguments([
 ])
 add_project_arguments(options, language: 'c')
 
-if motr_lib.found()
-  motr_options = cc.get_supported_arguments([
+motr_options = cc.get_supported_arguments([
     '-D_REENTRANT',
     '-D_GNU_SOURCE',
     '-DM0_INTERNAL= ',
@@ -40,33 +36,23 @@ if motr_lib.found()
     '-fno-common',
     '-fPIC'])
   add_project_arguments(motr_options, language: 'c')
-endif
 
-if motr_lib.found()
-   subdir('motr')
-endif
+subdir('motr')
 
-subdir('extstore')
 
 conf_data = configuration_data()
-conf_data.set('LIBEXTSTORE_BASE_VERSION', meson.project_version())
-conf_data.set('LIBEXTSTORE_EXTRA_VERSION', '')
+conf_data.set('LIBM0COMMON_BASE_VERSION', meson.project_version())
+conf_data.set('LIBM0COMMON_EXTRA_VERSION', '')
 
 distfile = meson.project_name() +  '-' + meson.project_version()
 conf_data.set('CPACK_SOURCE_PACKAGE_FILE_NAME', distfile)
 
-if rados_lib.found()
-	conf_data.set('BCOND_RADOS','%bcond_without')
-else
-	conf_data.set('BCOND_RADOS', '%bcond_with')
-endif
-
 # Build the spec file
-configure_file(input : 'libextstore.spec-in.meson',
-               output : 'libextstore.spec',
+configure_file(input : 'libm0common.spec-in.meson',
+               output : 'libm0common.spec',
                configuration : conf_data)
 
-filespec = meson.source_root() + '/libextstore.spec'
+filespec = meson.source_root() + '/libm0common.spec'
 distdir = meson.build_root() + '/meson-dist/' + meson.project_name() +  '-' + meson.project_version()
 
 meson.add_dist_script('/usr/bin/cp', filespec, distdir)
