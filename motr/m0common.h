@@ -35,6 +35,7 @@
 #include <sys/time.h>
 #include <assert.h>
 #include <fnmatch.h>
+#include <dirent.h> /* For MAXNAMLEN */
 
 #include "motr/client.h"
 #include "motr/client_internal.h"
@@ -43,7 +44,10 @@
 #include "lib/memory.h"
 #include "lib/thread.h"
 #include "lib/user_space/trace.h"
-#include <iosea/kvsal.h>
+#include <ini_config.h>
+
+#define KLEN 256
+#define VLEN 256
 
 
 /** Max number of blocks in concurrent IO per thread.
