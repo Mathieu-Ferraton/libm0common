@@ -1,8 +1,8 @@
 %define sourcename @CPACK_SOURCE_PACKAGE_FILE_NAME@
-%global dev_version %{lua: extraver = string.gsub('@LIBEXTSTORE_EXTRA_VERSION@', '%-', '.'); print(extraver) }
+%global dev_version %{lua: extraver = string.gsub('@LIBM0COMMON_EXTRA_VERSION@', '%-', '.'); print(extraver) }
 
 Name: libkvsns
-Version: @LIBEXTSTORE_BASE_VERSION@
+Version: @LIBM0COMMON_BASE_VERSION@
 Release: 0%{dev_version}%{?dist}
 Summary: Library to access to a namespace inside a KVS
 License: LGPLv3
