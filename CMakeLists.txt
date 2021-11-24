@@ -1,38 +1,24 @@
 cmake_minimum_required(VERSION 2.6.4)
 cmake_policy(SET CMP0017 NEW)
 
-PROJECT(libextstore C)
-set(LIBEXTSTORE_MAJOR_VERSION 1)
-set(LIBEXTSTORE_MINOR_VERSION 3)
-set(LIBEXTSTORE_PATCH_LEVEL 0)
-set(LIBEXTSTORE_EXTRA_VERSION "")
+PROJECT(libm0common C)
+set(LIBM0COMMON_MAJOR_VERSION 1)
+set(LIBM0COMMON_MINOR_VERSION 3)
+set(LIBM0COMMON_PATCH_LEVEL 0)
+set(LIBM0COMMON_EXTRA_VERSION "")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I${CMAKE_SOURCE_DIR}/include -fPIC -g")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror")
 
-set(LIBEXTSTORE_BASE_VERSION ${LIBEXTSTORE_MAJOR_VERSION}.${LIBEXTSTORE_MINOR_VERSION}.${LIBEXTSTORE_PATCH_LEVEL})
+set(LIBM0COMMON_BASE_VERSION ${LIBM0COMMON_MAJOR_VERSION}.${LIBM0COMMON_MINOR_VERSION}.${LIBM0COMMON_PATCH_LEVEL})
 
 message( STATUS "cmake version ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" )
-message( STATUS "libextstore version ${LIBEXTSTORE_BASE_VERSION}")
+message( STATUS "libm0common version ${LIBM0COMMON_BASE_VERSION}")
 
 # Final tuning
 
 include(CheckIncludeFiles)
 include(CheckLibraryExists)
-
-## Check ini_config
-check_include_files("ini_config.h" HAVE_INI_CONFIG_H)
-find_library(HAVE_INI_CONFIG ini_config)
-check_library_exists(
-	ini_config
-	config_from_file
-	""
-	HAVE_INI_CONFIG
-	)
-
-if((NOT HAVE_INI_CONFIG) OR (NOT HAVE_INI_CONFIG_H))
-      message(FATAL_ERROR "Cannot find ini_config")
-endif((NOT HAVE_INI_CONFIG) OR (NOT HAVE_INI_CONFIG_H))
 
 ## Check for MOTR
 find_library(HAVE_MOTR motr)
@@ -43,6 +29,10 @@ check_library_exists(
         HAVE_MOTR
 	)
 check_include_files("motr/config.h" HAVE_MOTR_H)
+
+if((NOT HAVE_MOTR) OR (NOT HAVE_MOTR_H))
+      message(FATAL_ERROR "Cannot find motr")
+endif((NOT HAVE_MOTR) OR (NOT HAVE_MOTR_H))
 
 ### Check for rados ###
 check_library_exists(
@@ -58,38 +48,16 @@ if((NOT HAVE_LIBRADOS) OR (NOT HAVE_RADOS_H))
 endif((NOT HAVE_LIBRADOS) OR (NOT HAVE_RADOS_H))
 
 
-## Set BCOND for spec file management */
-if (HAVE_RADOS_H AND HAVE_LIBRADOS)
-	set(BCOND_RADOS "%bcond_without")
-else (HAVE_RADOS_H AND HAVE_LIBRADOS)
-	set(BCOND_RADOS "%bcond_with")
-endif (HAVE_RADOS_H AND HAVE_LIBRADOS)
-
-if (HAVE_MOTR_H AND HAVE_MOTR)
-	set(BCOND_MOTR "%bcond_without")
-else (HAVE_MOTR_H AND HAVE_MOTR)
-	set(BCOND_MOTR "%bcond_with")
-endif (HAVE_MOTR_H AND HAVE_MOTR)
-
-if (HAVE_MOTR_H AND HAVE_MOTR)
-	set(HAVE_KVS TRUE)
-endif (HAVE_MOTR_H AND HAVE_MOTR)
-
-# Build ancillary libs
-add_subdirectory(extstore)
-add_subdirectory(hash)
-if (HAVE_MOTR AND HAVE_MOTR_H)
-	add_subdirectory(motr)
-endif (HAVE_MOTR AND HAVE_MOTR_H)
+add_subdirectory(motr)
 
 
 # CPack / rpmbuild specific stuff
-set(CPACK_PACKAGE_FILE_NAME "libextstore-Source" )
-set(CPACK_PACKAGE_VENDOR "EXTSTORE")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "EXTSTORE - an object store abstraction for KVSNS")
-SET(CPACK_PACKAGE_VERSION_MAJOR ${LIBEXTSTORE_MAJOR_VERSION})
-SET(CPACK_PACKAGE_VERSION_MINOR ${LIBEXTSTORE_MINOR_VERSION})
-SET(CPACK_PACKAGE_VERSION_PATCH ${LIBEXTSTORE_PATCH_LEVEL})
+set(CPACK_PACKAGE_FILE_NAME "libm0common-Source" )
+set(CPACK_PACKAGE_VENDOR "LIBM0COMMON")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "LIBM0COMMON - an object store abstraction for KVSNS")
+SET(CPACK_PACKAGE_VERSION_MAJOR ${LIBM0COMMON_MAJOR_VERSION})
+SET(CPACK_PACKAGE_VERSION_MINOR ${LIBM0COMMON_MINOR_VERSION})
+SET(CPACK_PACKAGE_VERSION_PATCH ${LIBM0COMMON_PATCH_LEVEL})
 
 # Tell CPack the kind of packages to be generated
 set(CPACK_GENERATOR "TGZ")
@@ -105,14 +73,19 @@ add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
 # Create the .pc file
 configure_file(
-  "${PROJECT_SOURCE_DIR}/libextstore.pc-in.cmake"
-  "${PROJECT_SOURCE_DIR}/libextstore.pc"
+  "${PROJECT_SOURCE_DIR}/libm0common.pc-in.cmake"
+  "${PROJECT_SOURCE_DIR}/libm0common.pc"
 )
 
 # Now create a useable specfile
 configure_file(
-  "${PROJECT_SOURCE_DIR}/libextstore.spec-in.cmake"
-  "${PROJECT_SOURCE_DIR}/libextstore.spec"
+  "${PROJECT_SOURCE_DIR}/libm0common.spec-in.cmake"
+  "${PROJECT_SOURCE_DIR}/libm0common.spec"
+)
+
+configure_file(
+  "${PROJECT_SOURCE_DIR}/libm0common.pc-in.cmake"
+  "${PROJECT_SOURCE_DIR}/libm0common.pc"
 )
 
 set(RPMDEST "--define '_srcrpmdir ${CMAKE_CURRENT_BINARY_DIR}'")
@@ -136,5 +109,5 @@ add_custom_command(TARGET srpm
                   DEPENDS dist)
 
 # INSTALL
-install(FILES ${PROJECT_SOURCE_DIR}/libextstore.pc DESTINATION lib)
+install(FILES ${PROJECT_SOURCE_DIR}/libm0common.pc DESTINATION lib)
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/kvsns DESTINATION include)

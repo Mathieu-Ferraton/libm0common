@@ -15,7 +15,7 @@
 #include <assert.h>
 #include <pthread.h>
 
-#include <kvsns/kvsal.h>
+#include <iosea/kvsal.h>
 #include "m0common.h"
 
 struct clovis_io_ctx {

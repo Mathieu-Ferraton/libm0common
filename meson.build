@@ -9,6 +9,7 @@ cc = meson.get_compiler('c')
 
 rados_lib = cc.find_library('librados', required: false)
 motr_lib = cc.find_library('libmotr', required: false)
+hashkvs_lib = cc.find_library('libhashkvs', required: false)
 dl_lib = cc.find_library('dl', required: true)
 pthread_lib = cc.find_library('pthread', required: true)
 ini_config_lib = cc.find_library('libini_config', required: true)
@@ -45,7 +46,6 @@ if motr_lib.found()
    subdir('motr')
 endif
 
-subdir('hash')
 subdir('extstore')
 
 conf_data = configuration_data()

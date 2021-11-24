@@ -43,7 +43,7 @@
 #include "lib/memory.h"
 #include "lib/thread.h"
 #include "lib/user_space/trace.h"
-#include <kvsns/kvsal.h>
+#include <iosea/kvsal.h>
 
 
 /** Max number of blocks in concurrent IO per thread.
