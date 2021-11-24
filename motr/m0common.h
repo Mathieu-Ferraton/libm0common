@@ -37,13 +37,13 @@
 #include <fnmatch.h>
 #include <dirent.h> /* For MAXNAMLEN */
 
-#include "motr/client.h"
-#include "motr/client_internal.h"
-#include "motr/init.h"
-#include "motr/idx.h"
-#include "lib/memory.h"
-#include "lib/thread.h"
-#include "lib/user_space/trace.h"
+#include <motr/motr/client.h>
+#include <motr/motr/client_internal.h>
+#include <motr/motr/init.h>
+#include <motr/motr/idx.h>
+#include <motr/lib/memory.h>
+#include <motr/lib/thread.h>
+#include <motr/lib/user_space/trace.h>
 #include <ini_config.h>
 
 #define KLEN 256
