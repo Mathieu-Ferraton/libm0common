@@ -24,3 +24,6 @@ target_link_libraries(m0common
   yaml
   ini_config
 )
+
+install(TARGETS m0common DESTINATION lib)
+

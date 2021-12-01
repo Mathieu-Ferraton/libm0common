@@ -114,4 +114,5 @@ endif(NOT WITHIN_IOSEA_NAMESPACE_REPO)
 
 # INSTALL
 install(FILES ${PROJECT_SOURCE_DIR}/libm0common.pc DESTINATION lib)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/kvsns DESTINATION include)
+#install(DIRECTORY ${PROJECT_SOURCE_DIR}/iosea DESTINATION include)
+install(FILES ${PROJECT_SOURCE_DIR}/motr/m0common.h DESTINATION include/iosea)
