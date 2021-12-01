@@ -69,7 +69,9 @@ set(CPACK_SOURCE_IGNORE_FILES
 include(CPack)
 
 set(PKG_NAME "${CPACK_PACKAGE_NAME}.tar.gz")
-add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+if(NOT WITHIN_IOSEA_NAMESPACE_REPO)
+  add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+endif(NOT WITHIN_IOSEA_NAMESPACE_REPO)
 
 # Create the .pc file
 configure_file(
@@ -90,23 +92,25 @@ configure_file(
 
 set(RPMDEST "--define '_srcrpmdir ${CMAKE_CURRENT_BINARY_DIR}'")
 
-add_custom_target( rpms DEPENDS dist)
-add_custom_command(TARGET rpms
-                  COMMAND sh -c "rpmbuild ${RPMDEST} -ta ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz"
-                  VERBATIM
-                  DEPENDS dist)
+if(NOT WITHIN_IOSEA_NAMESPACE_REPO)
+  add_custom_target( rpms DEPENDS dist)
+  add_custom_command(TARGET rpms
+                    COMMAND sh -c "rpmbuild ${RPMDEST} -ta ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz"
+                    VERBATIM
+                    DEPENDS dist)
 
-add_custom_target( rpm DEPENDS dist)
-add_custom_command(TARGET rpm
-                  COMMAND sh -c "rpmbuild ${RPMDEST} -tb ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz"
-                  VERBATIM
-                  DEPENDS dist)
+  add_custom_target( rpm DEPENDS dist)
+  add_custom_command(TARGET rpm
+                    COMMAND sh -c "rpmbuild ${RPMDEST} -tb ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz"
+                    VERBATIM
+                    DEPENDS dist)
 
-add_custom_target( srpm DEPENDS dist)
-add_custom_command(TARGET srpm
-                  COMMAND sh -c "rpmbuild ${RPMDEST} -ts ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz"
-                  VERBATIM
-                  DEPENDS dist)
+  add_custom_target( srpm DEPENDS dist)
+  add_custom_command(TARGET srpm
+                    COMMAND sh -c "rpmbuild ${RPMDEST} -ts ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz"
+                    VERBATIM
+                    DEPENDS dist)
+endif(NOT WITHIN_IOSEA_NAMESPACE_REPO)
 
 # INSTALL
 install(FILES ${PROJECT_SOURCE_DIR}/libm0common.pc DESTINATION lib)
