@@ -31,6 +31,7 @@ the libm0common provides a few functions that wraps some calls
 from the MOTR API. It is used by KVSAL/MOTR and EXTSTORE/MOTR inside
 the IO-SEA namespace tools.
 
+%global debug_package %{nil} 
 
 %prep
 %setup -q -n %{sourcename}
