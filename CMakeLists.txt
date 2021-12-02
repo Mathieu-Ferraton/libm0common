@@ -31,24 +31,11 @@ check_library_exists(
 check_include_files("motr/config.h" HAVE_MOTR_H)
 
 if((NOT HAVE_MOTR) OR (NOT HAVE_MOTR_H))
-      message(FATAL_ERROR "Cannot find motr")
+      message(STATUS "Cannot find motr")
+else((NOT HAVE_MOTR) OR (NOT HAVE_MOTR_H))
+      add_subdirectory(motr)
 endif((NOT HAVE_MOTR) OR (NOT HAVE_MOTR_H))
 
-### Check for rados ###
-check_library_exists(
-	rados
-	rados_connect
-	""
-	HAVE_LIBRADOS
-	)
-check_include_files("rados/librados.h" HAVE_RADOS_H)
-
-if((NOT HAVE_LIBRADOS) OR (NOT HAVE_RADOS_H))
-      message(STATUS "Cannot find librados")
-endif((NOT HAVE_LIBRADOS) OR (NOT HAVE_RADOS_H))
-
-
-add_subdirectory(motr)
 
 
 # CPack / rpmbuild specific stuff

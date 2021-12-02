@@ -46,8 +46,8 @@
 #include <motr/lib/user_space/trace.h>
 #include <ini_config.h>
 
-#define KLEN 256
-#define VLEN 256
+#define M0KLEN 300
+#define M0VLEN 300
 
 
 /** Max number of blocks in concurrent IO per thread.

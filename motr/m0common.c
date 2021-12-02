@@ -451,7 +451,7 @@ int m0_pattern_kvs(char *k, char *pattern,
 	int rc;
 	int rcs[1];
 	bool stop = false;
-	char myk[KLEN];
+	char myk[M0KLEN];
 	bool startp = false;
 	int size = 0;
 	int flags;
@@ -461,13 +461,13 @@ int m0_pattern_kvs(char *k, char *pattern,
 
 	do {
 		/* Iterate over all records in the index. */
-		rc = m0_bufvec_alloc(&keys, 1, KLEN) ?:
-		     m0_bufvec_alloc(&vals, 1, VLEN);
+		rc = m0_bufvec_alloc(&keys, 1, M0KLEN) ?:
+		     m0_bufvec_alloc(&vals, 1, M0VLEN);
 		if (rc != 0)
 			return rc;
 
-		keys.ov_buf[0] = m0_alloc(strnlen(myk, KLEN)+1);
-		keys.ov_vec.v_count[0] = strnlen(myk, KLEN)+1;
+		keys.ov_buf[0] = m0_alloc(strnlen(myk, M0KLEN)+1);
+		keys.ov_vec.v_count[0] = strnlen(myk, M0KLEN)+1;
 		strcpy(keys.ov_buf[0], myk);
 
 		rc = m0_idx_op(&idx, M0_IC_NEXT, &keys, &vals,

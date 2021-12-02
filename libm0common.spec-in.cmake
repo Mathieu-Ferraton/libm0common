@@ -15,21 +15,10 @@ Provides: %{name} = %{version}-%{release}
 Requires: %{name} = %{version}-%{release} cortx-motr
 Provides: %{name} = %{version}-%{release}
 
-# Conditionally enable KVS and object stores
-#
-# 1. rpmbuild accepts these options (gpfs as example):
-#    --without redis
-
-%define on_off_switch() %%{?with_%1:ON}%%{!?with_%1:OFF}
-
-# A few explanation about %bcond_with and %bcond_without
-# /!\ be careful: this syntax can be quite messy
-# %bcond_with means you add a "--with" option, default = without this feature
-# %bcond_without adds a"--without" so the feature is enabled by default
-
 %description
-The libm0common is a library that allows of a POSIX namespace built on top of
-a Key-Value Store.
+the libm0common provides a few functions that wraps some calls
+from the MOTR API. It is used by KVSAL/MOTR and EXTSTORE/MOTR inside
+the IO-SEA namespace tools.
 
 %package devel
 Summary: Development file for the library libextstore
@@ -38,7 +27,9 @@ Requires: %{name} = %{version}-%{release} pkgconfig
 Provides: %{name}-devel = %{version}-%{release}
 
 %description devel
-The devel package for libm0common
+the libm0common provides a few functions that wraps some calls
+from the MOTR API. It is used by KVSAL/MOTR and EXTSTORE/MOTR inside
+the IO-SEA namespace tools.
 
 
 %prep
