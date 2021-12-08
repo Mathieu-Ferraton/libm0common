@@ -49,7 +49,7 @@ mkdir -p %{buildroot}%{_libdir}/pkgconfig
 mkdir -p %{buildroot}%{_includedir}/iosea
 install -m 644 motr/libm0common.so %{buildroot}%{_libdir}
 install -m 644 libm0common.pc  %{buildroot}%{_libdir}/pkgconfig
-install -m 644 motr/m0common.h  %{buildroot}%{_includedir}/iosea
+install -m 644 include/iosea/m0common.h  %{buildroot}%{_includedir}/iosea
 
 
 %clean
