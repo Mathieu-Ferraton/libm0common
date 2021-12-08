@@ -101,4 +101,4 @@ endif(NOT WITHIN_IOSEA_NAMESPACE_REPO)
 
 # INSTALL
 install(FILES ${PROJECT_SOURCE_DIR}/libm0common.pc DESTINATION lib)
-install(FILES ${PROJECT_SOURCE_DIR}/motr/m0common.h DESTINATION include/iosea)
+install(FILES ${PROJECT_SOURCE_DIR}/include/iosea/m0common.h DESTINATION include/iosea)
